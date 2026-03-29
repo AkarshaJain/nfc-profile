@@ -1,54 +1,52 @@
-# NFC digital profile
+# nfc-profile
 
-Static Next.js 15 profile for NFC tags and QR codes.
+My digital profile page — built so people can tap an NFC tag or scan a QR code and land here without installing an app. Stack is **Next.js 15** + TypeScript + Tailwind; it exports to static HTML so I can host it on **GitHub Pages**.
 
-## Local development
+Repo: [github.com/AkarshaJain/nfc-profile](https://github.com/AkarshaJain/nfc-profile)
+
+---
+
+### Run it locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Optional: copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SITE_URL` (defaults to `http://localhost:3000` for metadata).
+Then open [localhost:3000](http://localhost:3000). If you care about OG preview URLs matching your machine, copy `.env.example` → `.env.local` and tweak `NEXT_PUBLIC_SITE_URL` (I use `http://localhost:3000` for dev).
 
-## Quality checks
+### Before pushing / sanity check
 
 ```bash
 npm run ci
 ```
 
-Produces a static site in `out/`. Preview it:
+That runs lint + build and drops everything into `out/`. To poke at the static output:
 
 ```bash
 npm run preview:static
 ```
 
-(`npm start` is for non-export Node servers only; this project uses static export.)
+Note: I’m using static export, so `npm start` isn’t really the path I use for this project.
 
-## Deploy to GitHub Pages
+---
 
-1. Create a repository under [AkarshaJain](https://github.com/AkarshaJain) (e.g. `nfc-profile`).
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-3. Push this repo to the `main` (or `master`) branch. The workflow in `.github/workflows/deploy-pages.yml` will build and publish the `out/` folder.
+### GitHub Pages
 
-The workflow sets:
+I wired up Actions so a push to `main` builds and deploys. On the repo: **Settings → Pages → Source: GitHub Actions** (if it isn’t already).
 
-- **Project site** (`https://akarshajain.github.io/<repo-name>/`): `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_BASE_PATH` automatically.
-- **User site** (repo name exactly `<username>.github.io`): site URL with no base path.
+Live site (once the workflow is green): **https://akarshajain.github.io/nfc-profile/**
 
-Encode **the live profile URL** (copy from the browser after deploy) on your NFC tag.
+For my NFC sticker I encoded whatever URL the browser shows after deploy — that’s the one that has to match.
 
-### QR and vCard URLs
+QR + the “Save contact” vCard both key off the **current page URL** in the browser, so they stay in sync whether I’m on localhost, a preview, or the real Pages URL without me redoing env vars every time.
 
-The QR code and “Save contact” vCard use **`window.location`** so they always match the URL you’re viewing (local, preview, or GitHub Pages) without rebuilding.
+---
 
-### Git identity (optional)
+### Editing my info
 
-```bash
-git config user.name "AkarshaJain"
-git config user.email "akarshajain888@gmail.com"
-```
+All the copy and links live in **`src/lib/profile.ts`**. Photo and résumé PDFs go in **`public/`** (I’m using `profile.png` + the ML résumé PDF).
 
-## Content
+---
 
-Edit `src/lib/profile.ts`. Put `profile.png` and your résumé PDF in `public/`.
+— Akarsha
